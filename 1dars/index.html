@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="info.css">
+    <title>Zamonaviy Ro'yxatdan O'tish</title>
+</head>
+<body>
+
+    <div class="live-counter">
+        <span class="counter-pulse"></span>
+        Faol foydalanuvchilar: <strong id="user-count">0</strong> ta
+    </div>
+
+    <button class="admin-toggle-btn" onclick="openAdminModal()">Admin Panel</button>
+
+    <div class="modal-overlay" id="adminModal">
+        <div class="admin-card">
+            <h2 class="admin-title">Admin Tizim</h2>
+            
+            <div id="admin-auth">
+                <p style="color: #a0aec0; margin-bottom: 15px; font-size: 14px;">Tizimga kirish uchun maxfiy kodni kiriting:</p>
+                <input type="password" id="admin-code" placeholder="Maxfiy kod" class="inp" style="width: 100%; margin-bottom: 15px; text-align: center;">
+                <button class="btn" onclick="checkAdminCode()">Kirish</button>
+                <p id="auth-error" style="color: #fc8181; font-size: 14px; margin-top: 10px; display: none;">Kod noto'g'ri!</p>
+            </div>
+
+            <div id="admin-content" style="display: none;">
+                <div class="stats-box">
+                    <span>Jami ro'yxatdan o'tganlar:</span>
+                    <strong id="total-registered">0 kishi</strong>
+                </div>
+                <div class="user-list-wrapper">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>F.I.Sh</th>
+                                <th>Telefon</th>
+                                <th>Hudud</th>
+                            </tr>
+                        </thead>
+                        <tbody id="users-table-body">
+                            </tbody>
+                    </table>
+                </div>
+                <button class="btn" onclick="closeAdminModal()" style="margin-top: 15px; background: #4a5568;">Yopish</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <form id="registrationForm" onsubmit="handleRegister(event)">
+            <h1 class="title">Ro'yxatdan o'tish</h1>
+            
+            <div class="box1">
+                <label class="label-inp">
+                    Familyangiz
+                    <input placeholder="Familyangizni kiriting" class="inp" type="text" required>
+                </label>
+                <label class="label-inp">
+                    Ismingiz
+                    <input placeholder="Ismingizni kiriting" class="inp" type="text" required>
+                </label>
+            </div>
+
+            <div class="box1">
+                <label class="label-inp">
+                    Yoshingiz
+                    <input class="inp" type="number" placeholder="Yoshingiz" required>
+                </label>
+                <label class="label-inp">
+                    Telefon raqamingiz
+                    <input class="inp" type="tel" placeholder="+998" required>
+                </label>
+            </div>
+            <div class="box1">
+                <label class="label-inp">
+                    Viloyat
+                    <select class="select" required>
+                        <option value="">Viloyatni tanlang</option>
+                        <option value="Qashqadaryo">Qashqadaryo</option>
+                        <option value="Surxandaryo">Surxandaryo</option>
+                        <option value="Toshkent">Toshkent</option> 
+                    </select>
+                </label>
+                <label class="label-inp">
+                    Tuman
+                    <select class="select" required>
+                        <option value="">Tumanni tanlang</option>
+                        <option value="G'uzor">G'uzor</option>
+                        <option value="Chiroqchi">Chiroqchi</option>
+                        <option value="Dehqonobod">Dehqonobod</option>
+                    </select>
+                </label>
+            </div>
+
+            <div class="box2">
+                <input type="checkbox" id="terms" required>
+                <label for="terms">Foydalanuvchi shartlariga va shaxsiy ma'lumotlar qayta ishlanishiga rozilik bildiraman.</label>
+            </div>
+
+            <div class="btn-div">
+                <button type="submit" class="btn">Ro'yxatdan o'tish</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+       
+        let registeredUsers = JSON.parse(localStorage.getItem('users')) || [];
+
+  
+        function updateCounters() {
+            document.getElementById('user-count').innerText = registeredUsers.length;
+            document.getElementById('total-registered').innerText = registeredUsers.length + " kishi";
+        }
+        updateCounters();
+
+       
+        function handleRegister(e) {
+            e.preventDefault();
+            const inputs = e.target.querySelectorAll('.inp');
+            const selects = e.target.querySelectorAll('.select');
+            
+            const newUser = {
+                lastname: inputs[0].value,
+                firstname: inputs[1].value,
+                phone: inputs[3].value,
+                region: selects[0].value
+            };
+
+            registeredUsers.push(newUser);
+            localStorage.setItem('users', JSON.stringify(registeredUsers));
+            
+            updateCounters();
+            alert("Muvaffaqiyatli ro'yxatdan o'tdingiz!");
+            e.target.reset();
+        }
+
+      
+        function openAdminModal() {
+            document.getElementById('adminModal').style.display = 'flex';
+        }
+
+        function closeAdminModal() {
+            document.getElementById('adminModal').style.display = 'none';
+            document.getElementById('admin-auth').style.display = 'block';
+            document.getElementById('admin-content').style.display = 'none';
+            document.getElementById('admin-code').value = '';
+            document.getElementById('auth-error').style.display = 'none';
+        }
+
+        // Admin parolini tekshirish (Kod: 1052)
+        function checkAdminCode() {
+            const code = document.getElementById('admin-code').value;
+            if(code === '1052') {
+                document.getElementById('admin-auth').style.display = 'none';
+                document.getElementById('admin-content').style.display = 'block';
+                renderUserList();
+            } else {
+                document.getElementById('auth-error').style.display = 'block';
+            }
+        }
+
+  
+        function renderUserList() {
+            const tbody = document.getElementById('users-table-body');
+            tbody.innerHTML = '';
+            
+            if(registeredUsers.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="3" style="text-align:center; color:#a0aec0;">Ro'yxat bo'sh</td></tr>`;
+                return;
+            }
+
+            registeredUsers.forEach(user => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${user.lastname} ${user.firstname}</td>
+                    <td>${user.phone}</td>
+                    <td>${user.region}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+    </script>
+</body>
+</html> 
+    
