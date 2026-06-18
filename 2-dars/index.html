@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>e-Maktab | Kirish</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="info.css">
+</head>
+<body>
+
+    <header class="navbar">
+        <div class="container navbar-container">
+            <ul class="nav-left">
+                <li class="logo">
+                    <a href="#">e-maktab</a>
+                </li>
+                <li class="lang-selector">
+                    <select id="language">
+                        <option value="uz">O'zb</option>
+                        <option value="en">Eng</option>
+                    </select>
+                </li>
+            </ul>
+            
+            <ul class="nav-right">
+                <li>
+                    <a href="https://help.kundalik.com" target="_blank" class="btn-detail">Batafsil</a>
+                </li>
+            </ul>
+        </div>
+    </header>
+
+    <main class="login-container">
+        <div class="login-card">
+            <h2>Tizimga kirish</h2>
+            <form action="#">
+                <div class="input-group">
+                    <label for="username">Login</label>
+                    <input type="text" id="username" placeholder="Loginni kiriting" required>
+                </div>
+
+                <div class="input-group">
+                    <label for="password">Parol</label>
+                    <input type="password" id="password" placeholder="Parolni kiriting" required>
+                </div>
+
+                <div class="input-group">
+                    <label for="confirm-password">Parolni tasdiqlash</label>
+                    <input type="password" id="confirm-password" placeholder="Parolni qayta kiriting" required>
+                </div>
+
+                <div class="forgot-password">
+                    <a href="https://help.kundalik.com/hc/ru/articles/360016514798" target="_blank">Parol esingizdan chiqdimi?</a>
+                </div>
+
+                <button type="submit" class="btn-login">Kirish</button>
+            </form>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container footer-container">
+            <div class="footer-logo">
+                <a href="#">e-maktab</a>
+            </div>
+            
+            <div class="social-links">
+                <a href="https://instagram.com" target="_blank" class="social-item text-instagram">
+                    <i class="fab fa-instagram"></i> Instagram
+                </a>
+                <a href="https://t.me" target="_blank" class="social-item text-telegram">
+                    <i class="fab fa-telegram-plane"></i> Telegram
+                </a>
+                <a href="https://facebook.com" target="_blank" class="social-item text-facebook">
+                    <i class="fab fa-facebook-f"></i> Facebook
+                </a>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>
